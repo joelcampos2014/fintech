@@ -20,18 +20,18 @@ public class AccountDao {
     }
 
     public List<Account> getAll() throws SQLException {
-        PreparedStatement stm = connection.prepareStatement("SELECT * FROM T_ACCOUNT");
+        PreparedStatement stm = connection.prepareStatement("SELECT * FROM account");
         ResultSet result = stm.executeQuery();
         List<Account> list = new ArrayList<>();
 
         while (result.next()) {
-            Long id = result.getLong("ID");
-            Date createdAt = result.getDate("CREATEDAT");
-            Date updateAt = result.getDate("UPDATEAT");
-            double balance = result.getDouble("BALANCE");
-            String numberBank = result.getString("NUMBER_BANK");
-            String agency = result.getString("AGENCY");
-            String numberAccount = result.getString("NUMBER_ACCOUNT");
+            Long id = result.getLong("id");
+            Date createdAt = result.getDate("created_at");
+            Date updateAt = result.getDate("update_at");
+            double balance = result.getDouble("balance");
+            String numberBank = result.getString("number_bank");
+            String agency = result.getString("number_account");
+            String numberAccount = result.getString("agency");
             list.add(parseAccount(result));
         }
         return list;
@@ -42,13 +42,13 @@ public class AccountDao {
     }
 
     private Account parseAccount(ResultSet result) throws SQLException {
-        Long id = result.getLong("ID");
-        Date createdAt = result.getDate("CREATEDAT");
-        Date updateAt = result.getDate("UPDATEAT");
-        double balance = result.getDouble("BALANCE");
-        String numberBank = result.getString("NUMBER_BANK");
-        String agency = result.getString("AGENCY");
-        String numberAccount = result.getString("NUMBER_ACCOUNT");
+        Long id = result.getLong("id");
+        Date createdAt = result.getDate("created_at");
+        Date updateAt = result.getDate("update_at");
+        double balance = result.getDouble("balance");
+        String numberBank = result.getString("number_bank");
+        String numberAccount = result.getString("number_account");
+        String agency = result.getString("agency");
         return new Account(id, numberAccount, agency, numberBank, createdAt, balance, updateAt);
     }
 }

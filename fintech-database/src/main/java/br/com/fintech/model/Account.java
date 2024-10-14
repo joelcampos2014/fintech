@@ -69,6 +69,7 @@ public class Account {
         this.balance = balance;
         return this;
     }
+
     public Date getCreatedAt() {
         return createdAt;
     }
