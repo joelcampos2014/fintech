@@ -1,6 +1,7 @@
 package br.com.fintech.dao;
 
 import br.com.fintech.exception.ConnectionFailedException;
+import br.com.fintech.exception.ObjectNotFoundException;
 import br.com.fintech.factory.ConnectionFactory;
 import br.com.fintech.model.Account;
 
@@ -48,6 +49,25 @@ public class AccountDao {
         stm.setString(5, account.getNumberAccount());
         stm.setString(6, account.getAgency());
         stm.executeUpdate();
+    }
+
+    public Account getById(long id) throws  SQLException, ObjectNotFoundException {
+        PreparedStatement stm = connection.prepareStatement("SELECT * FROM ACCOUNT WHERE ID = ?");
+        stm.setLong(1, id);
+        ResultSet result = stm.executeQuery();
+
+        if (!result.next())
+            throw new ObjectNotFoundException("Conta");
+
+        Long account_id = result.getLong("id");
+        Date createdAt = result.getDate("created_at");
+        Date updateAt = result.getDate("update_at");
+        double balance = result.getDouble("balance");
+        String numberBank = result.getString("number_bank");
+        String agency = result.getString("number_account");
+        String numberAccount = result.getString("agency");
+
+        return new Account(account_id, numberAccount, agency, numberBank, createdAt, balance, updateAt);
     }
 
     public void closeConnection() throws SQLException {

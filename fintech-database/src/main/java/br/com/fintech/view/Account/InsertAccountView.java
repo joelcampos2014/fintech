@@ -1,11 +1,9 @@
-package br.com.fintech.view;
+package br.com.fintech.view.Account;
 
 import br.com.fintech.dao.AccountDao;
 import br.com.fintech.model.Account;
 
 import java.sql.Date;
-import java.sql.SQLException;
-import java.time.LocalDate;
 
 public class InsertAccountView {
     public static void main(String [] agrs) {
@@ -16,9 +14,9 @@ public class InsertAccountView {
             dao.insert(account);
             dao.closeConnection();
             System.out.println("Conta Cadastrada Com Sucesso!");
+
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
-
     }
 }

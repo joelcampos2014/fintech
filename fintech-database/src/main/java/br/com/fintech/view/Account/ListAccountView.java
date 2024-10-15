@@ -1,8 +1,7 @@
-package br.com.fintech.view;
+package br.com.fintech.view.Account;
 
 import br.com.fintech.model.Account;
 import br.com.fintech.dao.AccountDao;
-import java.sql.SQLException;
 import java.util.List;
 
 public class ListAccountView {
