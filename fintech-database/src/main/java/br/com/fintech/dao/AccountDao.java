@@ -1,5 +1,6 @@
 package br.com.fintech.dao;
 
+import br.com.fintech.exception.ConnectionFailedException;
 import br.com.fintech.factory.ConnectionFactory;
 import br.com.fintech.model.Account;
 
@@ -8,14 +9,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 public class AccountDao {
 
     private Connection connection;
 
-    public AccountDao() throws SQLException {
+    public AccountDao() throws SQLException, ConnectionFailedException {
         connection = ConnectionFactory.getConnection();
     }
 
@@ -35,6 +36,18 @@ public class AccountDao {
             list.add(parseAccount(result));
         }
         return list;
+    }
+
+    public void insert(Account account) throws SQLException {
+        PreparedStatement stm = connection.prepareStatement("INSERT INTO ACCOUNT (ID, CREATED_AT,UPDATE_AT, BALANCE, " +
+                "NUMBER_BANK, NUMBER_ACCOUNT, AGENCY) VALUES (SEQ_ACCOUNT.NEXTVAL, ?, ?, ?, ?, ?,?)");
+        stm.setDate(1, account.getCreatedAt());
+        stm.setDate(2, account.getUpdateAt());
+        stm.setDouble(3, account.getBalance());
+        stm.setString(4, account.getNumberBank());
+        stm.setString(5, account.getNumberAccount());
+        stm.setString(6, account.getAgency());
+        stm.executeUpdate();
     }
 
     public void closeConnection() throws SQLException {
