@@ -1,6 +1,6 @@
 package br.com.fintech.model;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Account {
     private Long id;
@@ -20,7 +20,8 @@ public class Account {
         this.updateAt = updateAt;
     }
 
-    public Account(Long id, String numberAccount, String agency, String numberBank, Date createdAt, double balance, Date updateAt) {
+    public Account(Long id, String numberAccount, String agency, String numberBank, Date createdAt,
+                   double balance, Date updateAt) {
         this.id = id;
         this.numberAccount = numberAccount;
         this.agency = agency;
@@ -28,9 +29,6 @@ public class Account {
         this.createdAt = createdAt;
         this.balance = balance;
         this.updateAt = updateAt;
-    }
-
-    public Account() {
     }
 
     public String getNumberAccount() {
@@ -70,27 +68,30 @@ public class Account {
         return this;
     }
 
-    public Date getCreatedAt() {
+    public java.sql.Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public Account setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+        return this;
     }
 
     public Date getUpdateAt() {
         return updateAt;
     }
 
-    public void setUpdateAt(Date updateAt) {
+    public Account setUpdateAt(Date updateAt) {
         this.updateAt = updateAt;
+        return this;
     }
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public Account setId(Long id) {
         this.id = id;
+        return this;
     }
 }

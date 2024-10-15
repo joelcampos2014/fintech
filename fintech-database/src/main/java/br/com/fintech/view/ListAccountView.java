@@ -14,7 +14,7 @@ public class ListAccountView {
                 System.out.println(account.getId() + " - " + account.getBalance() + " - " + account.getNumberAccount()+ " - " + account.getNumberBank() + " - " + account.getCreatedAt() + " - " + account.getUpdateAt()+ " - " + account.getAgency());
             }
             dao.closeConnection();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.err.println(e.getMessage());
         }
     }
