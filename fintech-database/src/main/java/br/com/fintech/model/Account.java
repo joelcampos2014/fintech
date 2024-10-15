@@ -31,6 +31,9 @@ public class Account {
         this.updateAt = updateAt;
     }
 
+    public Account() {
+    }
+
     public String getNumberAccount() {
         return numberAccount;
     }
