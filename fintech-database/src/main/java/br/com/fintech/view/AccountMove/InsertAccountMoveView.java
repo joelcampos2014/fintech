@@ -13,7 +13,7 @@ public class InsertAccountMoveView {
             AccountMove move = new AccountMove(new Date(2024,7, 1), new Date(2024,7, 1), "Conta de Água", 250.00, "payables", "Conta mensal", 10);
             dao.insert(move);
             dao.closeConnection();
-            System.out.println("Conta Cadastrada Com Sucesso!");
+            System.out.println("Recebível/Despesa cadastrado com Sucesso!");
 
         } catch (Exception e) {
             System.err.println(e.getMessage());

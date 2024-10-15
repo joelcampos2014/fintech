@@ -5,23 +5,23 @@ import br.com.fintech.exception.InvalidTypeException;
 import br.com.fintech.exception.ObjectNotFoundException;
 import br.com.fintech.factory.ConnectionFactory;
 import br.com.fintech.model.Account;
-import br.com.fintech.model.AccountMove;
+import br.com.fintech.model.BankStatement;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AccountMoveDao {
+public class BankStatementDao {
     private Connection connection;
 
-    public AccountMoveDao() throws SQLException, ConnectionFailedException {
+    public BankStatementDao() throws SQLException, ConnectionFailedException {
         connection = ConnectionFactory.getConnection();
     }
 
-    public List<AccountMove> getAll() throws SQLException {
-        PreparedStatement stm = connection.prepareStatement("SELECT * FROM account_move");
+    public List<BankStatement> getAll() throws SQLException {
+        PreparedStatement stm = connection.prepareStatement("SELECT * FROM bank_statement");
         ResultSet result = stm.executeQuery();
-        List<AccountMove> list = new ArrayList<>();
+        List<BankStatement> list = new ArrayList<>();
 
         while (result.next()) {
             Long id = result.getLong("id");
@@ -29,33 +29,29 @@ public class AccountMoveDao {
             Date updateAt = result.getDate("update_at");
             String name = result.getString("name");
             double amount = result.getDouble("amount");
-            String type = result.getString("type");
+            Date date = result.getDate("move_date");
             String description = result.getString("description");
             Long accountId = result.getLong("account_id");
-            list.add(parseAccountMove(result));
+            list.add(parseBankStatement(result));
         }
         return list;
     }
 
-    public void insert(AccountMove move) throws SQLException, InvalidTypeException {
+    public void insert(BankStatement bankStatement) throws SQLException {
         try {
-            PreparedStatement stm = connection.prepareStatement("INSERT INTO ACCOUNT_MOVE (ID, CREATED_AT,UPDATE_AT, NAME, " +
-                    "AMOUNT, TYPE, DESCRIPTION, ACCOUNT_ID) VALUES (SEQ_ACCOUNT_MOVE.NEXTVAL, ?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement stm = connection.prepareStatement("INSERT INTO BANK_STATEMENT (ID, CREATED_AT,UPDATE_AT, NAME, " +
+                    "AMOUNT, MOVE_DATE, DESCRIPTION, ACCOUNT_ID) VALUES (SEQ_ACCOUNT_MOVE.NEXTVAL, ?, ?, ?, ?, ?, ?, ?)");
 
             AccountDao accountDao = new AccountDao();
-            List<String> types = accountDao.getTypes();
 
-            if (!types.contains(move.getType()))
-                throw new InvalidTypeException(move.getType());
+            Account account = accountDao.getById(bankStatement.getAccountId());
 
-            Account account = accountDao.getById(move.getAccountId());
-
-            stm.setDate(1, move.getCreatedAt());
-            stm.setDate(2, move.getUpdateAt());
-            stm.setString(3, move.getName());
-            stm.setDouble(4, move.getAmount());
-            stm.setString(5, move.getType());
-            stm.setString(6, move.getDescription());
+            stm.setDate(1, bankStatement.getCreatedAt());
+            stm.setDate(2, bankStatement.getUpdateAt());
+            stm.setString(3, bankStatement.getName());
+            stm.setDouble(4, bankStatement.getAmount());
+            stm.setDate(5, bankStatement.getMoveDate());
+            stm.setString(6, bankStatement.getDescription());
             stm.setLong(7, account.getId());
             stm.executeUpdate();
 
@@ -68,15 +64,15 @@ public class AccountMoveDao {
         connection.close();
     }
 
-    private AccountMove parseAccountMove(ResultSet result) throws SQLException {
+    private BankStatement parseBankStatement(ResultSet result) throws SQLException {
         Long id = result.getLong("id");
         Date createdAt = result.getDate("created_at");
         Date updateAt = result.getDate("update_at");
         String name = result.getString("name");
         double amount = result.getDouble("amount");
-        String type = result.getString("type");
+        Date moveDate = result.getDate("move_date");
         String description = result.getString("description");
         int accountId = result.getInt("account_id");
-        return new AccountMove(id, createdAt, updateAt, name, amount, description, type, accountId);
+        return new BankStatement(id, createdAt, updateAt, name, amount, moveDate, description, accountId);
     }
 }

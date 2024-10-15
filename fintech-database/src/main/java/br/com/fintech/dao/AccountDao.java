@@ -74,6 +74,14 @@ public class AccountDao {
         connection.close();
     }
 
+    public List<String> getTypes() {
+        List<String> types = new ArrayList<>();
+        types.add("receivables");
+        types.add("payables");
+
+        return types;
+    }
+
     private Account parseAccount(ResultSet result) throws SQLException {
         Long id = result.getLong("id");
         Date createdAt = result.getDate("created_at");
